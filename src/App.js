@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+//@ts-check
+import React, { useCallback, useState } from 'react';
+import Header from './components/Header';
+import { Outlet } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import UserContext from './UserContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleClientId } from './Constants';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+	const [user, setUser] = useState({});
+
+	const updateUser = useCallback((user) => {
+		setUser(user);
+	}, []);
+
+	return (
+		<>
+			<GoogleOAuthProvider clientId={GoogleClientId}>
+				<UserContext.Provider value={{ user, updateUser }}>
+					<Header />
+					<Outlet />
+					<ToastContainer />
+				</UserContext.Provider>
+			</GoogleOAuthProvider>
+		</>
+	);
 }
 
 export default App;
