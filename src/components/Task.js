@@ -1,9 +1,9 @@
 //@ts-check
-import React, { useContext } from 'react'
-import UserContext from '../UserContext'
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 const Task = () => {
-    const { user } = useContext(UserContext);
+    const user = useSelector((state) => state.user.user);
 
     return (
         <div>

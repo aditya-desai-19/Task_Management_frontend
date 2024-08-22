@@ -4,10 +4,13 @@ import { Form, FloatingLabel, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import Styles from './LoginSignUpForm.module.css';
-import axios from 'axios';
 import { toast } from 'react-toastify';
-import UserContext from '../UserContext';
 import { GoogleLogin } from '@react-oauth/google';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../redux/slices/userSlice';
+import Cookies from 'js-cookie';
+import { decodeToken } from '../utils/Common';
+import axiosInstance from '../utils/api';
 
 const LoginSignUpForm = ({ isSignUp }) => {
     const {
@@ -16,8 +19,8 @@ const LoginSignUpForm = ({ isSignUp }) => {
         reset
     } = useForm();
 
-    const { updateUser } = useContext(UserContext);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const pageTitle = useMemo(() => {
         return isSignUp ? "Signup" : "Login";
@@ -30,7 +33,7 @@ const LoginSignUpForm = ({ isSignUp }) => {
                 toast.error("Password does not match");
                 return;
             }
-            const response = await axios.post("/api/user/signup", values)
+            const response = await axiosInstance.post("/api/user/signup", values)
             if (response.status === 201) {
                 toast.success("Successfully signed up");
                 navigate("/login");
@@ -43,17 +46,24 @@ const LoginSignUpForm = ({ isSignUp }) => {
         }
     }, []);
 
-    const navigateUserOnSuccessfullLogin = useCallback((user) => {
+    const navigateUserOnSuccessfullLogin = useCallback((token) => {
         toast.success("Successfully logged in");
-        updateUser(user);
-        navigate("/task");
-    }, []);
+        const user = decodeToken(token);
+        console.log({token, user})
+        if (user && Object.keys(user).length) {
+            dispatch(addUser(user));
+            Cookies.set('token', token, { expires: 1 });
+            navigate("/task");
+        } else {
+            throw new Error();
+        }
+    }, [addUser, decodeToken]);
 
     const callLoginApi = useCallback(async (values) => {
         try {
-            const response = await axios.post("/api/user/login", values);
+            const response = await axiosInstance.post("/api/user/login", values);
             if (response.status === 200) {
-                navigateUserOnSuccessfullLogin(response.data.user);
+                navigateUserOnSuccessfullLogin(response.data.token);
             } else {
                 throw new Error();
             }
@@ -72,9 +82,8 @@ const LoginSignUpForm = ({ isSignUp }) => {
     const onGoogleAuthSuccess = useCallback(async (value) => {
         try {
             const credential = { credential: value.credential };
-            const response = await axios.post("/api/user/google-auth", credential);
-            console.log({ user: response.data.user });
-            navigateUserOnSuccessfullLogin(response.data.user);
+            const response = await axiosInstance.post("/api/user/google-auth", credential);
+            navigateUserOnSuccessfullLogin(response.data.token);
         } catch (error) {
             console.log({ error })
             toast.error("Some error occured");
