@@ -3,7 +3,7 @@ import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import LoginSignUpForm from './components/LoginSignUpForm';
-import Task from './components/Task';
+import Task from './pages/Task';
 
 const router = createBrowserRouter([
     {

@@ -1,0 +1,15 @@
+.main {
+    height: 500px;
+    border: 1px solid gray;
+}
+
+.title {
+    width: 100%;
+    background-color: #3FA2F6;
+    padding: 5px;
+    color: white;
+}
+
+.body {
+    padding: 10px;
+}

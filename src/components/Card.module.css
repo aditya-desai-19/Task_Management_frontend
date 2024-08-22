@@ -1,0 +1,16 @@
+.main {
+    height: 200px;
+    width: 100%;
+    position: relative;
+    border: 1px solid gray;
+}
+
+.buttonContainer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.button {
+    margin: 5px;
+}
