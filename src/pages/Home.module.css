@@ -1,0 +1,33 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 70px);
+}
+
+.title {
+    font-size: 60px;
+    color: #00A9FF;
+    margin: 10px;
+}
+
+.tagline {
+    color: #373A40;
+    margin: 10px;
+}
+
+.redirectBtn {
+    margin: 10px;
+}
+
+/* mobile */
+@media screen and (max-width: 450px){
+    .title {
+        font-size: 40px;
+    }
+
+    .tagline {
+        font-size: 18px;
+    }
+}

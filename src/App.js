@@ -30,8 +30,12 @@ const App = () => {
 
 	useEffect(() => {
 		const token = Cookies.get('token');
-		updateUser(token);
-		navigate("/task");
+		if(token) {
+			updateUser(token);
+			navigate("/task");
+		} else {
+			navigate("/home");
+		}
 	}, []);
 
 	return (

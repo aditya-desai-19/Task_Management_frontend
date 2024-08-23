@@ -5,12 +5,17 @@ import App from './App';
 import LoginSignUpForm from './components/LoginSignUpForm';
 import Task from './pages/Task';
 import NotFound from './pages/NotFound';
+import Home from './pages/Home';
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
         children: [
+            {
+                path: "/home",
+                element: <Home />
+            },
             {
                 path: "/login",
                 element: <LoginSignUpForm isSignUp={false}/>

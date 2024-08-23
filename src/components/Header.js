@@ -2,7 +2,7 @@
 import React, { useCallback, useContext } from 'react';
 import { Navbar, Container, Button, Nav } from 'react-bootstrap';
 import Styles from './Header.module.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearUser } from '../redux/slices/userSlice';
@@ -17,6 +17,7 @@ const Header = () => {
         dispatch(clearUser());
         toast.success("Successfully logged out");
         Cookies.remove("token");
+        navigate("/home");
     }, [clearUser]);
 
     return (
@@ -27,10 +28,10 @@ const Header = () => {
                 <Navbar.Collapse className="justify-content-end">
                     {Object.keys(user).length ?
                         <Button type='button' variant='danger' onClick={logOut}>Logout</Button>
-                    :
+                        :
                         <>
                             <Button type='button' variant='light' onClick={() => navigate("/login")} className={Styles.login}>Login</Button>
-                            <Nav.Link className={Styles.signup}>Signup</Nav.Link>
+                            <Button type='button' variant='outline-light' onClick={() => navigate("/signup")} className={Styles.signup}>Signup</Button>
                         </>
                     }
                 </Navbar.Collapse>

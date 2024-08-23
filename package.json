@@ -25,7 +25,7 @@
     "react-toastify": "^10.0.5",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "http://localhost:4000/",
+  "proxy": "https://task-management-backend-cezk.onrender.com/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
