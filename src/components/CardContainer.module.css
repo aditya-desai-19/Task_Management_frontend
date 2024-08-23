@@ -1,0 +1,30 @@
+.main {
+    height: 500px;
+    overflow-y: auto;
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+}
+
+.title {
+    width: 100%;
+    background-color: #3FA2F6;
+    padding: 5px;
+    color: white;
+}
+
+.body {
+    padding: 10px;
+    height: calc(100% - 50px);
+}
+
+.dropZone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 10px;
+    background-color: #5AB2FF;
+    color: white;
+    position: relative;
+    z-index: 999;
+}

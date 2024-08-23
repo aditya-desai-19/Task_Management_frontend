@@ -1,0 +1,20 @@
+.main {
+    height: 200px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    border: 1px solid gainsboro;
+    background-color: #CAF4FF;
+    padding: 5px;
+    margin: 5px;
+}
+
+.buttonContainer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.button {
+    margin: 5px;
+}

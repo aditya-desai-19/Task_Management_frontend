@@ -3,17 +3,21 @@ import React, { useCallback, useContext } from 'react';
 import { Navbar, Container, Button, Nav } from 'react-bootstrap';
 import Styles from './Header.module.css';
 import { useNavigate } from 'react-router-dom';
-import UserContext from '../UserContext';
 import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearUser } from '../redux/slices/userSlice';
+import Cookies from 'js-cookie';
 
 const Header = () => {
-    const { user, updateUser } = useContext(UserContext);
     const navigate = useNavigate();
+    const user = useSelector((state) => state.user.user);
+    const dispatch = useDispatch();
 
     const logOut = useCallback(() => {
-        updateUser({});
+        dispatch(clearUser());
         toast.success("Successfully logged out");
-    }, [updateUser]);
+        Cookies.remove("token");
+    }, [clearUser]);
 
     return (
         <Navbar bg="primary" className={Styles.navbar}>

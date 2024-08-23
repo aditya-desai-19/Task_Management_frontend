@@ -1,28 +1,47 @@
 //@ts-check
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Header from './components/Header';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import UserContext from './UserContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleClientId } from './Constants';
+import { useDispatch } from 'react-redux';
+import { addUser } from './redux/slices/userSlice';
+import Cookies from 'js-cookie';
+import { decodeToken } from './utils/Common';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
-	const [user, setUser] = useState({});
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	const updateUser = useCallback((user) => {
-		setUser(user);
+	const updateUser = useCallback((token) => {
+		try {
+			const user = decodeToken(token)
+			if (user && Object.keys(user).length) {
+				dispatch(addUser(user));
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}, []);
+
+	useEffect(() => {
+		const token = Cookies.get('token');
+		updateUser(token);
+		navigate("/task");
 	}, []);
 
 	return (
 		<>
 			<GoogleOAuthProvider clientId={GoogleClientId}>
-				<UserContext.Provider value={{ user, updateUser }}>
+				<DndProvider backend={HTML5Backend}>
 					<Header />
 					<Outlet />
 					<ToastContainer />
-				</UserContext.Provider>
+				</DndProvider>
 			</GoogleOAuthProvider>
 		</>
 	);
