@@ -6,18 +6,21 @@ import CardContainer from '../components/CardContainer';
 import AddEditModal, { taskStatus } from '../components/AddEditModal';
 import axiosInstance from '../utils/api';
 import { toast } from 'react-toastify';
-import { addTodoItem, clearTasks } from '../redux/slices/cardSlice';
+import { addDoneItem, addInProgressItem, addTodoItem, clearTasks } from '../redux/slices/cardSlice';
+import Styles from './Task.module.css';
+import { useNavigate } from 'react-router-dom'
 
-const loginMessage = "Please login";
 
 const Task = () => {
     const [showAddModal, setShowAddModal] = useState(false);
+    
     const user = useSelector((state) => state.user.user);
     const todos = useSelector((state) => state.card.todo);
     const inProgressTodos = useSelector((state) => state.card.inProgress);
     const doneTodos = useSelector((state) => state.card.done);
     
     const dispatch = useDispatch();
+    const navigate = useNavigate(); 
 
     const toggleAddModal = useCallback(() => {
         setShowAddModal(prev => !prev);
@@ -31,14 +34,12 @@ const Task = () => {
         try {
             const response = await axiosInstance.get("/api/task");
             if(response.status === 200) {
-                console.log({tasks: response.data.tasks});
                 const todos = response.data.tasks.filter(task => task.status === taskStatus.todo);
                 const inProgress = response.data.tasks.filter(task => task.status === taskStatus.inProgress);
                 const done = response.data.tasks.filter(task => task.status === taskStatus.done);
-                console.log({todos, inProgress, done})
                 dispatch(addTodoItem(todos));
-                dispatch(addTodoItem(inProgress));
-                dispatch(addTodoItem(done));
+                dispatch(addInProgressItem(inProgress));
+                dispatch(addDoneItem(done));
             } else {
                 throw new Error();
             }
@@ -53,27 +54,27 @@ const Task = () => {
     }, []);
 
     return (
-        <div>
+        <div style={{height: "calc(100% - 70px"}}>
             <AddEditModal title={"Add"} show={showAddModal} handleClose={toggleAddModal}/>
             {Object.keys(user).length ? 
-                <Container style={{marginTop: "20px"}}>
-                    <Row style={{margin: 5}}>
+                <Container className={Styles.container}>
+                    <Row className={Styles.addButtonRow}>
                         <Col>
                             <Button variant='primary' onClick={toggleAddModal}>Add task</Button>
                         </Col>
                     </Row>
-                    <Row style={{margin: 5, border: "1px solid gray", padding: "10px"}}>
-                        <Col lg={8}>
+                    <Row className={Styles.searchRow}>
+                        <Col lg={8} className={Styles.searchCol}>
                             <div>
-                                <label style={{marginRight: 10}}>Search</label>
-                                <input type="text" placeholder="Search" />
+                                <label className={Styles.searchLabel}>Search</label>
+                                <input type="text" placeholder="Search"  className={Styles.searchInput}/>
                             </div>
                         </Col>
                         <Col></Col>
                         <Col lg={3}>
                             <div>
-                                <label style={{marginRight: 10}}>Sort by</label>
-                                <select>
+                                <label className={Styles.searchLabel}>Sort by</label>
+                                <select className={Styles.searchInput}>
                                     <option value="desc">Recent</option>
                                     <option value="asc">First to last</option>
                                 </select>
@@ -81,19 +82,23 @@ const Task = () => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
-                            <CardContainer key={"Todo"} title={"Todo"} cards={todos}/>
+                        <Col sm={8} md={6} lg={4}>
+                            <CardContainer key={"Todo"} title={"Todo"} status={taskStatus.todo} cards={todos}/>
                         </Col>
-                        <Col>
-                            <CardContainer key={"progress"} title={"In progress"} cards={inProgressTodos}/>
+                        <Col sm={8} md={6} lg={4}>
+                            <CardContainer key={"progress"} title={"In progress"} status={taskStatus.inProgress} cards={inProgressTodos}/>
                         </Col>
-                        <Col>
-                            <CardContainer key={"Done"} title={"Done"} cards={doneTodos}/>
+                        <Col sm={8} md={6} lg={4}>
+                            <CardContainer key={"Done"} title={"Done"} status={taskStatus.done} cards={doneTodos}/>
                         </Col>
                     </Row>
                 </Container>
                 : 
-                loginMessage
+                <div className={Styles.home}>
+                    <h2 className={Styles.title}>Welcome to Taskly</h2>
+                    <h4 className={Styles.tagline}>Streamline Your Workflow, Achieve More</h4>
+                    <Button type='button' className={Styles.redirectBtn} variant='primary' onClick={() => navigate("/login")}>Get started</Button>
+                </div>
             }
         </div>
     )

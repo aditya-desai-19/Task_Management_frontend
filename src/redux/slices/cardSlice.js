@@ -11,31 +11,28 @@ export const cardSlice = createSlice({
     initialState,
     reducers: {
         addTodoItem: (state, action) => {
-            const newCard = action.payload;
-            const newCardList = [newCard, ...state.todo];
-            state.todo = newCardList;
+            const newCards = [...state.todo, ...action.payload];
+            state.todo = newCards;
         }, 
         deleteTodoItem: (state, action) => {
             const id = action.payload;
-            state.todo = state.todo.filter(item => item.id !== id);
+            state.todo = state.todo.filter(item => item._id !== id);
         },
         addInProgressItem: (state, action) => {
-            const newCard = action.payload;
-            const newCardList = [newCard, ...state.inProgress];
-            state.inProgress = newCardList;
+            const newCards = [...state.inProgress, ...action.payload];
+            state.inProgress = newCards;
         }, 
         deleteInProgressItem: (state, action) => {
             const id = action.payload;
-            state.inProgress = state.inProgress.filter(item => item.id !== id);
+            state.inProgress = state.inProgress.filter(item => item._id !== id);
         },
         addDoneItem: (state, action) => {
-            const newCard = action.payload;
-            const newCardList = [newCard, ...state.done];
-            state.done = newCardList;
+            const newCards = [...state.done, ...action.payload];
+            state.done = newCards;
         }, 
         deleteDoneItem: (state, action) => {
             const id = action.payload;
-            state.done = state.done.filter(item => item.id !== id);
+            state.done = state.done.filter(item => item._id !== id);
         }, 
         clearTasks: (state) => {
             state.todo = [];

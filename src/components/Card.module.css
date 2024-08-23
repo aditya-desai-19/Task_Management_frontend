@@ -2,7 +2,11 @@
     height: 200px;
     width: 100%;
     position: relative;
-    border: 1px solid gray;
+    border-radius: 10px;
+    border: 1px solid gainsboro;
+    background-color: #CAF4FF;
+    padding: 5px;
+    margin: 5px;
 }
 
 .buttonContainer {

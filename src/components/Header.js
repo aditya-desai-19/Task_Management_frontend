@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearUser } from '../redux/slices/userSlice';
+import Cookies from 'js-cookie';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ const Header = () => {
     const logOut = useCallback(() => {
         dispatch(clearUser());
         toast.success("Successfully logged out");
+        Cookies.remove("token");
     }, [clearUser]);
 
     return (

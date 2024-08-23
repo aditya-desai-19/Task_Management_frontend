@@ -1,6 +1,8 @@
 .main {
     height: 500px;
-    border: 1px solid gray;
+    overflow-y: auto;
+    border: 1px solid gainsboro;
+    border-radius: 10px;
 }
 
 .title {
@@ -12,4 +14,17 @@
 
 .body {
     padding: 10px;
+    height: calc(100% - 50px);
+}
+
+.dropZone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 10px;
+    background-color: #5AB2FF;
+    color: white;
+    position: relative;
+    z-index: 999;
 }

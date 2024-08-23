@@ -6,11 +6,12 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleClientId } from './Constants';
-import { store } from './redux/store';
-import { Provider, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addUser } from './redux/slices/userSlice';
 import Cookies from 'js-cookie';
 import { decodeToken } from './utils/Common';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -36,9 +37,11 @@ const App = () => {
 	return (
 		<>
 			<GoogleOAuthProvider clientId={GoogleClientId}>
-				<Header />
-				<Outlet />
-				<ToastContainer />
+				<DndProvider backend={HTML5Backend}>
+					<Header />
+					<Outlet />
+					<ToastContainer />
+				</DndProvider>
 			</GoogleOAuthProvider>
 		</>
 	);

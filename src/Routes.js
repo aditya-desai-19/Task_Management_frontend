@@ -4,6 +4,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import LoginSignUpForm from './components/LoginSignUpForm';
 import Task from './pages/Task';
+import NotFound from './pages/NotFound';
 
 const router = createBrowserRouter([
     {
@@ -23,8 +24,11 @@ const router = createBrowserRouter([
                 element: <Task />
             },
         ]
-        
     },
+    {
+        path: "*",
+        element: <NotFound />
+    }
 ]);
 
 
