@@ -81,7 +81,7 @@ const LoginSignUpForm = ({ isSignUp }) => {
         try {
             const credential = { credential: value.credential };
             const response = await axiosInstance.post("/api/user/google-auth", credential);
-            console.log({response})
+            console.info({response})
             navigateUserOnSuccessfullLogin(response.data.token);
         } catch (error) {
             console.log({ error })

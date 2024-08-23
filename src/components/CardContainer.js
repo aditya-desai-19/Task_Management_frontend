@@ -65,7 +65,6 @@ const CardContainer = ({ title, cards = [], status }) => {
 		if(isoDate)  {
 			const date = parseISO(isoDate);
 			const formattedDate = format(date, 'dd/MM/yyyy HH:mm:ss');
-			console.log({formattedDate})
 			return formattedDate;
 		}
 		return null;
