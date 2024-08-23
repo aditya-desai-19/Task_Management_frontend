@@ -47,13 +47,12 @@ const LoginSignUpForm = ({ isSignUp }) => {
     }, []);
 
     const navigateUserOnSuccessfullLogin = useCallback((token) => {
-        toast.success("Successfully logged in");
         const user = decodeToken(token);
-        console.log({token, user})
         if (user && Object.keys(user).length) {
             dispatch(addUser(user));
             Cookies.set('token', token, { expires: 1 });
             navigate("/task");
+            toast.success("Successfully logged in");
         } else {
             throw new Error();
         }
@@ -74,7 +73,6 @@ const LoginSignUpForm = ({ isSignUp }) => {
     }, []);
 
     const onSubmit = useCallback((values) => {
-        console.log({ values })
         isSignUp ? callSignUpApi(values) : callLoginApi(values);
         reset();
     }, [callLoginApi, callSignUpApi, isSignUp]);
@@ -83,6 +81,7 @@ const LoginSignUpForm = ({ isSignUp }) => {
         try {
             const credential = { credential: value.credential };
             const response = await axiosInstance.post("/api/user/google-auth", credential);
+            console.log({response})
             navigateUserOnSuccessfullLogin(response.data.token);
         } catch (error) {
             console.log({ error })

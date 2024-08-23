@@ -78,7 +78,6 @@ const AddEditModal = ({ show, handleClose, title, id, defaultValues, isReadOnly 
     }, [handleClose, updateReduxStore]);
 
     const onSubmit = useCallback(async (values) => {
-        console.log({values});
         id ? callUpdateTaskApi(values, id) : callAddTaskApi(values);
         reset();
     }, [callUpdateTaskApi, callAddTaskApi]);
