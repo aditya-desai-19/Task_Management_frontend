@@ -4,6 +4,8 @@
 
 This document provides an overview of the frontend implementation for the Task Management App. The app is built using React.js and incorporates various libraries and features to enhance functionality and user experience.
 
+Live link: https://task-management-frontend-eight.vercel.app/
+
 ## Libraries Used
 
 - **React.js**: A JavaScript library for building user interfaces.
