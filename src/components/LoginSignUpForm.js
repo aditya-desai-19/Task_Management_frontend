@@ -8,8 +8,7 @@ import { toast } from 'react-toastify';
 import { GoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { addUser } from '../redux/slices/userSlice';
-import Cookies from 'js-cookie';
-import { decodeToken } from '../utils/Common';
+import { decodeToken, setToken } from '../utils/Common';
 import axiosInstance from '../utils/api';
 
 const LoginSignUpForm = ({ isSignUp }) => {
@@ -50,7 +49,7 @@ const LoginSignUpForm = ({ isSignUp }) => {
         const user = decodeToken(token);
         if (user && Object.keys(user).length) {
             dispatch(addUser(user));
-            Cookies.set('token', token, { expires: 1 });
+            setToken(token);
             navigate("/task");
             toast.success("Successfully logged in");
         } else {
@@ -81,7 +80,7 @@ const LoginSignUpForm = ({ isSignUp }) => {
         try {
             const credential = { credential: value.credential };
             const response = await axiosInstance.post("/api/user/google-auth", credential);
-            console.log({response})
+            console.info({response})
             navigateUserOnSuccessfullLogin(response.data.token);
         } catch (error) {
             console.log({ error })

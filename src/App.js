@@ -8,8 +8,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleClientId } from './Constants';
 import { useDispatch } from 'react-redux';
 import { addUser } from './redux/slices/userSlice';
-import Cookies from 'js-cookie';
-import { decodeToken } from './utils/Common';
+import { decodeToken, getToken } from './utils/Common';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -29,7 +28,7 @@ const App = () => {
 	}, []);
 
 	useEffect(() => {
-		const token = Cookies.get('token');
+		const token = getToken();
 		if(token) {
 			updateUser(token);
 			navigate("/task");
