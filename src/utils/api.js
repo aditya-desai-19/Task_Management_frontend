@@ -1,15 +1,14 @@
 //@ts-check
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import { getToken } from './Common';
 
 const axiosInstance = axios.create({
     baseURL: 'https://task-management-backend-dun.vercel.app',
-    withCredentials: true 
 });
 
 axiosInstance.interceptors.request.use(
     config => {
-        const token = Cookies.get('token');
+        const token = getToken();
         
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;

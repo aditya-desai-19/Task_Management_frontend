@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
 const decodeToken = (token) => {
@@ -12,4 +13,16 @@ const decodeToken = (token) => {
     return user;
 }
 
-export { decodeToken }
+const setToken = (token) => {
+    Cookies.set('token', token, { expires: 1 });
+}
+
+const getToken = () => {
+    return Cookies.get("token");
+}
+
+const removeToken = (token) => {
+    Cookies.remove(token);
+}
+
+export { decodeToken, getToken, setToken, removeToken }
